@@ -1,466 +1,660 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Hindi Economic News AI</title>
+<title>Hindi Economic News AI</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
 
-    body {
-      background: #0b1120;
-      color: #e5e7eb;
-    }
+body{
+  background:#080f1f;
+  color:#e5e7eb;
+}
 
-    header {
-      background: #111827;
-      border-bottom: 1px solid #263244;
-      padding: 18px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+header{
+  background:#111827;
+  border-bottom:1px solid #263244;
+  padding:16px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
 
-    .logo {
-      font-size: 21px;
-      font-weight: bold;
-    }
+.logo{
+  font-size:20px;
+  font-weight:bold;
+}
 
-    .logo span {
-      color: #38bdf8;
-    }
+.logo span{
+  color:#38bdf8;
+}
 
-    .status {
-      font-size: 13px;
-      color: #86efac;
-    }
+.status{
+  color:#86efac;
+  font-size:12px;
+}
 
-    .container {
-      width: 92%;
-      max-width: 1400px;
-      margin: 30px auto;
-    }
+.container{
+  width:92%;
+  max-width:1400px;
+  margin:25px auto;
+}
 
-    .hero {
-      background: linear-gradient(135deg, #111827, #172554);
-      border: 1px solid #263244;
-      border-radius: 18px;
-      padding: 30px;
-      margin-bottom: 25px;
-    }
+.hero{
+  background:linear-gradient(135deg,#111827,#172554);
+  border:1px solid #263244;
+  border-radius:18px;
+  padding:25px;
+  margin-bottom:25px;
+}
 
-    .hero h1 {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
+.hero h1{
+  font-size:28px;
+  margin-bottom:10px;
+}
 
-    .hero p {
-      color: #9ca3af;
-      line-height: 1.6;
-    }
+.hero p{
+  color:#a1a1aa;
+  line-height:1.6;
+}
 
-    .bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin: 25px 0 15px;
-    }
+.bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:20px 0 15px;
+}
 
-    .bar h2 {
-      font-size: 21px;
-    }
+.refresh{
+  border:0;
+  background:#0284c7;
+  color:white;
+  padding:10px 15px;
+  border-radius:8px;
+  cursor:pointer;
+}
 
-    .refresh {
-      background: #0284c7;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:16px;
+}
 
-    .refresh:hover {
-      background: #0369a1;
-    }
+.card{
+  background:#111827;
+  border:1px solid #263244;
+  border-radius:15px;
+  padding:17px;
+}
 
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 18px;
-    }
+.card:hover{
+  border-color:#38bdf8;
+}
 
-    .card {
-      background: #111827;
-      border: 1px solid #263244;
-      border-radius: 16px;
-      padding: 20px;
-    }
+.impact{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:5px;
+  font-size:10px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
 
-    .card:hover {
-      border-color: #38bdf8;
-    }
+.high{
+  background:#451a1a;
+  color:#fca5a5;
+}
 
-    .impact {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+.medium{
+  background:#422006;
+  color:#fdba74;
+}
 
-    .high {
-      background: #451a1a;
-      color: #fca5a5;
-    }
+.low{
+  background:#172554;
+  color:#93c5fd;
+}
 
-    .medium {
-      background: #422006;
-      color: #fdba74;
-    }
+.unknown{
+  background:#1e293b;
+  color:#cbd5e1;
+}
 
-    .low {
-      background: #172554;
-      color: #93c5fd;
-    }
+.card h3{
+  font-size:17px;
+  margin-bottom:6px;
+}
 
-    .unknown {
-      background: #1e293b;
-      color: #cbd5e1;
-    }
+.country{
+  color:#94a3b8;
+  font-size:12px;
+  margin-bottom:12px;
+}
 
-    .card h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
+.date{
+  color:#38bdf8;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:13px;
+}
 
-    .country {
-      color: #94a3b8;
-      font-size: 13px;
-      margin-bottom: 15px;
-    }
+.data-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
 
-    .date {
-      color: #38bdf8;
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
+.data-box{
+  background:#0b1120;
+  padding:9px 4px;
+  border-radius:7px;
+  text-align:center;
+}
 
-    .data-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
+.data-box small{
+  display:block;
+  color:#64748b;
+  font-size:10px;
+  margin-bottom:4px;
+}
 
-    .data-box {
-      background: #0b1120;
-      padding: 11px 5px;
-      border-radius: 8px;
-      text-align: center;
-    }
+.data-box strong{
+  font-size:13px;
+}
 
-    .data-box small {
-      display: block;
-      color: #64748b;
-      margin-bottom: 5px;
-      font-size: 11px;
-    }
+.analysis-btn{
+  width:100%;
+  margin-top:13px;
+  padding:10px;
+  border:1px solid #0369a1;
+  border-radius:8px;
+  background:#082f49;
+  color:#7dd3fc;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .data-box strong {
-      color: #e2e8f0;
-      font-size: 14px;
-    }
+.analysis-btn:hover{
+  background:#075985;
+}
 
-    .loading,
-    .empty,
-    .error {
-      background: #111827;
-      border: 1px solid #263244;
-      border-radius: 14px;
-      padding: 25px;
-      text-align: center;
-      color: #94a3b8;
-    }
+.loading,
+.empty,
+.error{
+  background:#111827;
+  border:1px solid #263244;
+  border-radius:14px;
+  padding:25px;
+  text-align:center;
+  color:#94a3b8;
+}
 
-    .error {
-      color: #fca5a5;
-      border-color: #7f1d1d;
-    }
+.error{
+  color:#fca5a5;
+}
 
-    .analysis {
-      margin-top: 25px;
-      background: linear-gradient(135deg, #0f172a, #172554);
-      border: 1px solid #334155;
-      border-radius: 16px;
-      padding: 22px;
-    }
+.info{
+  margin-top:25px;
+  background:linear-gradient(135deg,#0f172a,#172554);
+  border:1px solid #334155;
+  border-radius:16px;
+  padding:22px;
+}
 
-    .analysis h2 {
-      color: #38bdf8;
-      margin-bottom: 12px;
-    }
+.info h2{
+  color:#38bdf8;
+  margin-bottom:10px;
+}
 
-    .gold {
-      margin-top: 18px;
-      padding: 18px;
-      background: #1c1917;
-      border: 1px solid #44403c;
-      border-radius: 12px;
-    }
+.gold{
+  margin-top:15px;
+  background:#1c1917;
+  border:1px solid #44403c;
+  border-radius:10px;
+  padding:16px;
+}
 
-    .gold h3 {
-      color: #fbbf24;
-      margin-bottom: 8px;
-    }
+.gold h3{
+  color:#fbbf24;
+  margin-bottom:7px;
+}
 
-    .note {
-      margin-top: 25px;
-      padding: 15px;
-      background: #1e293b;
-      border-radius: 10px;
-      color: #94a3b8;
-      font-size: 12px;
-      line-height: 1.6;
-    }
+/* MODAL */
 
-    footer {
-      text-align: center;
-      color: #64748b;
-      padding: 35px 10px;
-      font-size: 13px;
-    }
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.78);
+  z-index:100;
+  overflow:auto;
+  padding:20px;
+}
 
-    @media(max-width:600px) {
-      .hero h1 {
-        font-size: 25px;
-      }
+.modal-box{
+  max-width:850px;
+  margin:40px auto;
+  background:#111827;
+  border:1px solid #334155;
+  border-radius:18px;
+  padding:22px;
+}
 
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+.close{
+  float:right;
+  border:0;
+  background:#374151;
+  color:white;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  cursor:pointer;
+}
 
-      .bar {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-    }
-  </style>
+.modal-title{
+  color:#38bdf8;
+  font-size:23px;
+  margin-bottom:5px;
+  padding-right:40px;
+}
+
+.modal-subtitle{
+  color:#94a3b8;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.stat{
+  background:#0b1120;
+  padding:14px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.stat small{
+  color:#64748b;
+  display:block;
+  margin-bottom:5px;
+}
+
+.stat strong{
+  font-size:18px;
+}
+
+.hindi-analysis{
+  background:#172554;
+  border:1px solid #1e40af;
+  border-radius:12px;
+  padding:18px;
+  line-height:1.7;
+  margin-bottom:18px;
+}
+
+.hindi-analysis h3{
+  color:#60a5fa;
+  margin-bottom:8px;
+}
+
+.history-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:13px;
+}
+
+.history-table th,
+.history-table td{
+  padding:9px;
+  border-bottom:1px solid #263244;
+  text-align:left;
+}
+
+.history-table th{
+  color:#38bdf8;
+}
+
+footer{
+  text-align:center;
+  color:#64748b;
+  padding:30px;
+  font-size:12px;
+}
+
+@media(max-width:600px){
+
+  header{
+    padding:14px 4%;
+  }
+
+  .hero h1{
+    font-size:24px;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .modal{
+    padding:10px;
+  }
+
+  .modal-box{
+    margin:20px auto;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">
-    Hindi <span>Economic News AI</span>
-  </div>
 
-  <div class="status" id="status">
-    ● Connecting...
-  </div>
+<div class="logo">
+Hindi <span>Economic News AI</span>
+</div>
+
+<div class="status" id="status">
+● Connecting...
+</div>
+
 </header>
+
 
 <main class="container">
 
-  <section class="hero">
-    <h1>🇮🇳 Hindi Economic News AI</h1>
+<section class="hero">
 
-    <p>
-      महत्वपूर्ण economic news को आसान हिंदी में देखें।
-      अभी live economic calendar connect किया जा रहा है।
-      आगे historical analysis और AI-based probability analysis भी जोड़ा जाएगा।
-    </p>
-  </section>
+<h1>🇮🇳 Hindi Economic News AI</h1>
 
+<p>
+Important US economic news को आसान हिंदी में समझें।
+Live calendar, historical data और future-release analysis
+एक ही जगह।
+</p>
 
-  <div class="bar">
-    <h2>🔴 Upcoming Economic News</h2>
-
-    <button class="refresh" onclick="loadNews()">
-      ↻ Refresh
-    </button>
-  </div>
-
-  <div id="newsContainer">
-    <div class="loading">
-      ⏳ Live news load हो रही है...
-    </div>
-  </div>
+</section>
 
 
-  <section class="analysis">
+<div class="bar">
 
-    <h2>🤖 AI Analysis</h2>
+<h2>🔴 Upcoming Economic News</h2>
 
-    <p>
-      इस section में अगले चरण में पिछले 2–3 महीनों के economic data,
-      previous releases और historical surprises को analyse करके
-      upcoming news के possible outcomes की probability दिखाई जाएगी।
-    </p>
+<button class="refresh" onclick="loadNews()">
+↻ Refresh
+</button>
 
-    <div class="gold">
-
-      <h3>🥇 XAU/USD Impact</h3>
-
-      <p>
-        News release के बाद Gold पर संभावित impact को USD strength,
-        inflation, interest rates और historical market reaction के
-        आधार पर analyse किया जाएगा।
-      </p>
-
-    </div>
-
-  </section>
+</div>
 
 
-  <div class="note">
-    ⚠️ यह website economic information और probability-based analysis
-    प्रदान करेगी। Future economic release को निश्चित रूप से predict
-    नहीं किया जा सकता। Actual market reaction अलग हो सकता है।
-  </div>
+<div id="newsContainer">
+
+<div class="loading">
+⏳ Live news load हो रही है...
+</div>
+
+</div>
+
+
+<section class="info">
+
+<h2>🤖 Economic Analysis Engine</h2>
+
+<p>
+किसी भी news पर 3 Month Analysis दबाकर उसके historical
+data को देख सकते हैं।
+</p>
+
+<div class="gold">
+
+<h3>🥇 XAU/USD Impact</h3>
+
+<p>
+Historical inflation, employment, GDP और interest-rate data
+के आधार पर Gold पर संभावित प्रभाव का assessment किया जाएगा।
+</p>
+
+</div>
+
+</section>
+
 
 </main>
 
+
 <footer>
-  Hindi Economic News AI © 2026
+Hindi Economic News AI © 2026
 </footer>
+
+
+<!-- ANALYSIS MODAL -->
+
+<div class="modal" id="analysisModal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeAnalysis()">
+×
+</button>
+
+<h2 class="modal-title" id="modalTitle">
+3 Month Analysis
+</h2>
+
+<div class="modal-subtitle" id="modalSubtitle">
+Historical economic data
+</div>
+
+
+<div id="analysisContent">
+
+<div class="loading">
+⏳ Historical data load हो रहा है...
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 
 <script>
 
-function getValue(obj, keys) {
+function getValue(obj,keys){
 
-  for (const key of keys) {
-    if (
+  for(const key of keys){
+
+    if(
       obj &&
       obj[key] !== undefined &&
       obj[key] !== null &&
       obj[key] !== ""
-    ) {
+    ){
       return obj[key];
     }
+
   }
 
   return "—";
 }
 
 
-function formatDate(value) {
+function formatDate(value){
 
-  if (!value) {
+  if(!value){
     return "Date unavailable";
   }
 
-  const date = new Date(value);
+  const date=new Date(value);
 
-  if (Number.isNaN(date.getTime())) {
+  if(Number.isNaN(date.getTime())){
     return String(value);
   }
 
-  return date.toLocaleString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
+  return date.toLocaleString("en-IN",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric",
+    hour:"2-digit",
+    minute:"2-digit"
   });
 }
 
 
-function getImpact(item) {
+function getImpact(item){
 
-  const value = String(
-    getValue(item, [
+  const value=String(
+    getValue(item,[
       "importance",
       "impact",
-      "priority",
-      "importance_level"
+      "priority"
     ])
   ).toLowerCase();
 
-  if (
-    value.includes("high") ||
-    value === "3"
-  ) {
+  if(value.includes("high") || value==="3"){
     return {
-      text: "HIGH IMPACT",
-      className: "high"
+      text:"HIGH IMPACT",
+      className:"high"
     };
   }
 
-  if (
-    value.includes("medium") ||
-    value.includes("moderate") ||
-    value === "2"
-  ) {
+  if(value.includes("medium") || value==="2"){
     return {
-      text: "MEDIUM IMPACT",
-      className: "medium"
+      text:"MEDIUM IMPACT",
+      className:"medium"
     };
   }
 
-  if (
-    value.includes("low") ||
-    value === "1"
-  ) {
+  if(value.includes("low") || value==="1"){
     return {
-      text: "LOW IMPACT",
-      className: "low"
+      text:"LOW IMPACT",
+      className:"low"
     };
   }
 
   return {
-    text: "IMPACT",
-    className: "unknown"
+    text:"IMPACT",
+    className:"unknown"
   };
 }
 
 
-function getNewsName(item) {
+function getNewsName(item){
 
-  return getValue(item, [
+  return getValue(item,[
     "name",
     "event",
     "event_name",
     "title",
-    "indicator",
-    "description"
+    "indicator"
   ]);
 }
 
 
-function getNewsDate(item) {
+function getNewsDate(item){
 
-  return getValue(item, [
+  return getValue(item,[
     "release_date",
+    "next_release",
     "release_datetime",
-    "date",
-    "datetime",
-    "release_time",
-    "time"
+    "date"
   ]);
 }
 
 
-function renderNews(news) {
+/* =========================
+   LOAD NEWS
+========================= */
 
-  const container = document.getElementById("newsContainer");
+async function loadNews(){
 
-  if (!Array.isArray(news) || news.length === 0) {
+  const container=
+    document.getElementById("newsContainer");
 
-    container.innerHTML = `
+  const status=
+    document.getElementById("status");
+
+  status.textContent="● Loading...";
+  status.style.color="#fbbf24";
+
+  container.innerHTML=`
+    <div class="loading">
+      ⏳ BusinessQuant से live news लाई जा रही है...
+    </div>
+  `;
+
+  try{
+
+    const response=
+      await fetch("/api/economic-news",{
+        cache:"no-store"
+      });
+
+    const result=
+      await response.json();
+
+    if(!response.ok || !result.success){
+      throw new Error(
+        result.error || "API request failed"
+      );
+    }
+
+    renderNews(result.data);
+
+    status.textContent=
+      "● Live data connected";
+
+    status.style.color="#86efac";
+
+  }catch(error){
+
+    console.error(error);
+
+    status.textContent=
+      "● Connection Error";
+
+    status.style.color="#fca5a5";
+
+    container.innerHTML=`
+      <div class="error">
+        ❌ News load नहीं हो पाई।<br><br>
+        ${error.message}
+      </div>
+    `;
+  }
+}
+
+
+/* =========================
+   RENDER NEWS
+========================= */
+
+function renderNews(news){
+
+  const container=
+    document.getElementById("newsContainer");
+
+  if(!Array.isArray(news) || news.length===0){
+
+    container.innerHTML=`
       <div class="empty">
         📭 अभी कोई upcoming economic news नहीं मिली।
       </div>
@@ -470,43 +664,42 @@ function renderNews(news) {
   }
 
 
-  container.innerHTML = `
+  container.innerHTML=`
+
     <div class="news-grid">
 
-      ${news.map(item => {
+      ${news.map((item,index)=>{
 
-        const impact = getImpact(item);
+        const impact=getImpact(item);
 
-        const name = getNewsName(item);
+        const name=getNewsName(item);
 
-        const date = getNewsDate(item);
+        const date=getNewsDate(item);
 
-        const latest = getValue(item, [
-          "latest",
-          "actual",
-          "value",
-          "current"
-        ]);
+        const previous=
+          getValue(item,[
+            "previous",
+            "prior",
+            "prior_value"
+          ]);
 
-        const prior = getValue(item, [
-          "prior",
-          "previous",
-          "previous_value"
-        ]);
+        const latest=
+          getValue(item,[
+            "latest",
+            "latest_value",
+            "actual"
+          ]);
 
-        const change = getValue(item, [
-          "change",
-          "change_value",
-          "difference"
-        ]);
+        const change=
+          getValue(item,[
+            "change",
+            "change_abs"
+          ]);
 
-        const country = getValue(item, [
-          "country",
-          "currency",
-          "region"
-        ]);
+        const code=
+          item.code || "";
 
-        return `
+        return`
 
           <div class="card">
 
@@ -519,31 +712,61 @@ function renderNews(news) {
             </h3>
 
             <div class="country">
-              🇺🇸 ${country}
+              🇺🇸 United States
             </div>
 
             <div class="date">
               📅 ${formatDate(date)}
             </div>
 
+
             <div class="data-row">
 
               <div class="data-box">
+
                 <small>Previous</small>
-                <strong>${prior}</strong>
+
+                <strong>
+                  ${previous}
+                </strong>
+
               </div>
 
+
               <div class="data-box">
+
                 <small>Latest</small>
-                <strong>${latest}</strong>
+
+                <strong>
+                  ${latest}
+                </strong>
+
               </div>
 
+
               <div class="data-box">
+
                 <small>Change</small>
-                <strong>${change}</strong>
+
+                <strong>
+                  ${change}
+                </strong>
+
               </div>
 
             </div>
+
+
+            <button
+              class="analysis-btn"
+              onclick='openAnalysis(${JSON.stringify({
+                name:name,
+                code:code,
+                date:date
+              })})'
+            >
+              📊 3 Month Analysis
+            </button>
 
           </div>
 
@@ -552,77 +775,421 @@ function renderNews(news) {
       }).join("")}
 
     </div>
+
   `;
 }
 
 
-async function loadNews() {
+/* =========================
+   OPEN ANALYSIS
+========================= */
 
-  const container = document.getElementById("newsContainer");
+async function openAnalysis(item){
 
-  const status = document.getElementById("status");
+  const modal=
+    document.getElementById("analysisModal");
 
-  status.textContent = "● Loading...";
+  const title=
+    document.getElementById("modalTitle");
 
-  container.innerHTML = `
+  const subtitle=
+    document.getElementById("modalSubtitle");
+
+  const content=
+    document.getElementById("analysisContent");
+
+
+  modal.style.display="block";
+
+  title.textContent=
+    "📊 "+item.name;
+
+  subtitle.textContent=
+    "पिछले 3 महीने का historical analysis";
+
+
+  if(!item.code){
+
+    content.innerHTML=`
+      <div class="error">
+        ❌ इस indicator का code उपलब्ध नहीं है।
+      </div>
+    `;
+
+    return;
+  }
+
+
+  content.innerHTML=`
     <div class="loading">
-      ⏳ BusinessQuant से live news लाई जा रही है...
+      ⏳ ${item.name} का historical data load हो रहा है...
     </div>
   `;
 
 
-  try {
+  try{
 
-    const response = await fetch("/api/economic-news", {
-      cache: "no-store"
-    });
+    const response=
+      await fetch(
+        "/api/economic-history?code="+
+        encodeURIComponent(item.code),
+        {
+          cache:"no-store"
+        }
+      );
 
-    const result = await response.json();
+
+    const result=
+      await response.json();
 
 
-    if (!response.ok || !result.success) {
+    if(!response.ok || !result.success){
 
       throw new Error(
-        result.error || "API request failed"
+        result.error ||
+        "Historical API request failed"
       );
 
     }
 
 
-    renderNews(result.data);
+    renderHistory(
+      result,
+      item
+    );
 
-    status.textContent =
-      "● Live data connected";
 
-    status.style.color =
-      "#86efac";
-
-  } catch (error) {
+  }catch(error){
 
     console.error(error);
 
-    status.textContent =
-      "● Connection Error";
-
-    status.style.color =
-      "#fca5a5";
-
-    container.innerHTML = `
+    content.innerHTML=`
       <div class="error">
-        ❌ Live news load नहीं हो पाई।<br><br>
+
+        ❌ Historical data load नहीं हो पाया।
+
+        <br><br>
+
         ${error.message}
+
       </div>
     `;
   }
 }
 
 
-// पहली बार website खुलते ही news load होगी
+/* =========================
+   HISTORY
+========================= */
+
+function renderHistory(result,item){
+
+  const content=
+    document.getElementById("analysisContent");
+
+
+  let data=
+    Array.isArray(result.data)
+      ? result.data
+      : [];
+
+
+  /*
+   * API response अलग-अलग structure में
+   * आ सकता है, इसलिए common structures
+   * को normalize कर रहे हैं.
+   */
+
+  if(
+    data.length===0 &&
+    result.data &&
+    typeof result.data==="object"
+  ){
+
+    const firstKey=
+      Object.keys(result.data)[0];
+
+    if(firstKey){
+
+      const possible=
+        result.data[firstKey];
+
+      if(Array.isArray(possible)){
+        data=possible;
+      }
+
+    }
+  }
+
+
+  if(data.length===0){
+
+    content.innerHTML=`
+      <div class="empty">
+        📭 इस indicator का 3 महीने का
+        historical data उपलब्ध नहीं मिला।
+      </div>
+    `;
+
+    return;
+  }
+
+
+  const values=data.map(row=>{
+
+    return Number(
+      getValue(row,[
+        "value",
+        "latest",
+        "actual",
+        "close"
+      ])
+    );
+
+  }).filter(value=>Number.isFinite(value));
+
+
+  let first=values[0];
+
+  let last=values[values.length-1];
+
+  let change=last-first;
+
+  let percentage=
+    first!==0
+      ? (change/Math.abs(first))*100
+      : 0;
+
+
+  let trend="स्थिर";
+
+  if(percentage>1){
+    trend="बढ़ता हुआ 📈";
+  }
+
+  if(percentage<-1){
+    trend="गिरता हुआ 📉";
+  }
+
+
+  let directionText="";
+
+  if(percentage>1){
+
+    directionText=`
+      पिछले 3 महीनों में इस indicator में
+      overall बढ़त दिखाई दे रही है।
+      अगर आने वाली release में भी data
+      इसी दिशा में आता है तो USD और
+      Gold पर इसका प्रभाव महत्वपूर्ण हो
+      सकता है।
+    `;
+
+  }else if(percentage<-1){
+
+    directionText=`
+      पिछले 3 महीनों में इस indicator में
+      overall गिरावट दिखाई दे रही है।
+      आने वाली release में actual data
+      इस trend को confirm या reverse कर
+      सकता है।
+    `;
+
+  }else{
+
+    directionText=`
+      पिछले 3 महीनों में indicator में
+      बहुत बड़ा directional change नहीं
+      दिखाई दे रहा है।
+    `;
+  }
+
+
+  content.innerHTML=`
+
+    <div class="stats">
+
+      <div class="stat">
+        <small>पहली Value</small>
+        <strong>${formatNumber(first)}</strong>
+      </div>
+
+      <div class="stat">
+        <small>Latest Value</small>
+        <strong>${formatNumber(last)}</strong>
+      </div>
+
+      <div class="stat">
+        <small>Overall Change</small>
+        <strong>${percentage.toFixed(2)}%</strong>
+      </div>
+
+    </div>
+
+
+    <div class="hindi-analysis">
+
+      <h3>
+        🇮🇳 Hindi Analysis
+      </h3>
+
+      <p>
+        <b>Trend:</b> ${trend}
+      </p>
+
+      <p style="margin-top:8px;">
+        ${directionText}
+      </p>
+
+      <p style="margin-top:10px;">
+        ⚠️ यह historical-data-based assessment है।
+        इससे future release को निश्चित रूप से
+        predict नहीं किया जा सकता।
+      </p>
+
+    </div>
+
+
+    <h3 style="color:#38bdf8;">
+      📅 Historical Data
+    </h3>
+
+
+    <div style="overflow-x:auto;">
+
+      <table class="history-table">
+
+        <thead>
+
+          <tr>
+            <th>Date</th>
+            <th>Value</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          ${data.slice(-20).reverse().map(row=>{
+
+            const date=
+              getValue(row,[
+                "date",
+                "period",
+                "timestamp"
+              ]);
+
+            const value=
+              getValue(row,[
+                "value",
+                "latest",
+                "actual",
+                "close"
+              ]);
+
+            return`
+
+              <tr>
+
+                <td>
+                  ${formatDateOnly(date)}
+                </td>
+
+                <td>
+                  ${value}
+                </td>
+
+              </tr>
+
+            `;
+
+          }).join("")}
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function formatNumber(value){
+
+  if(!Number.isFinite(value)){
+    return "—";
+  }
+
+  return Number(value).toLocaleString(
+    "en-US",
+    {
+      maximumFractionDigits:4
+    }
+  );
+}
+
+
+function formatDateOnly(value){
+
+  if(!value){
+    return "—";
+  }
+
+  const date=new Date(value);
+
+  if(Number.isNaN(date.getTime())){
+    return String(value);
+  }
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
+}
+
+
+function closeAnalysis(){
+
+  document.getElementById(
+    "analysisModal"
+  ).style.display="none";
+}
+
+
+window.onclick=function(event){
+
+  const modal=
+    document.getElementById(
+      "analysisModal"
+    );
+
+  if(event.target===modal){
+    closeAnalysis();
+  }
+
+};
+
+
+/* Start */
+
 loadNews();
 
 
-// हर 5 मिनट में automatic refresh
-setInterval(loadNews, 5 * 60 * 1000);
+/* Auto refresh every 5 minutes */
+
+setInterval(
+  loadNews,
+  5*60*1000
+);
 
 </script>
 
