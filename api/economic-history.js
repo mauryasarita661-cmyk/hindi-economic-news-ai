@@ -5,38 +5,38 @@ export default async function handler(req, res) {
     if (!apiKey) {
       return res.status(500).json({
         success: false,
-        error: "BUSINESSQUANT_API_KEY is not configured"
+        error: "BUSINESSQUANT_API_KEY missing"
       });
     }
 
-    const { code } = req.query;
+    const rawCode = req.query?.code;
+
+    if (!rawCode) {
+      return res.status(400).json({
+        success: false,
+        error: "Indicator code missing"
+      });
+    }
+
+    // Calendar se aane wale code ko safely normalize karo
+    const code = String(rawCode)
+      .trim()
+      .split(",")[0]
+      .trim();
 
     if (!code) {
       return res.status(400).json({
         success: false,
-        error: "Economic indicator code is required"
+        error: "Invalid indicator code"
       });
     }
 
-    // Security: maximum 5 codes per request
-    const codes = String(code)
-      .split(",")
-      .map(item => item.trim())
-      .filter(Boolean)
-      .slice(0, 5);
-
-    if (codes.length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: "Invalid economic indicator code"
-      });
-    }
-
-    const params = new URLSearchParams();
-
-    params.set("code", codes.join(","));
-    params.set("period", "3mo");
-    params.set("api_key", apiKey);
+    const params = new URLSearchParams({
+      code: code,
+      period: "3mo",
+      mode: "original",
+      api_key: apiKey
+    });
 
     const url =
       `https://data.businessquant.com/economic?${params.toString()}`;
@@ -49,12 +49,24 @@ export default async function handler(req, res) {
       cache: "no-store"
     });
 
-    const result = await response.json();
+    const text = await response.text();
+
+    let result;
+
+    try {
+      result = JSON.parse(text);
+    } catch {
+      result = {
+        raw: text
+      };
+    }
 
     if (!response.ok) {
       return res.status(response.status).json({
         success: false,
         error: "BusinessQuant historical data request failed",
+        httpStatus: response.status,
+        code: code,
         details: result
       });
     }
@@ -62,14 +74,16 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       source: "BusinessQuant",
+      code: code,
       period: "3mo",
-      requestedCodes: codes,
       metadata: result.metadata || [],
-      data: result.data || []
+      data: Array.isArray(result.data)
+        ? result.data
+        : []
     });
 
   } catch (error) {
-    console.error("Economic history error:", error);
+    console.error(error);
 
     return res.status(500).json({
       success: false,
