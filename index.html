@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Hindi Economic News AI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0b1120;
+      color: #e5e7eb;
+    }
+
+    header {
+      background: #111827;
+      border-bottom: 1px solid #263244;
+      padding: 18px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .logo span {
+      color: #38bdf8;
+    }
+
+    .status {
+      font-size: 13px;
+      color: #86efac;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1400px;
+      margin: 30px auto;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #111827, #172554);
+      border: 1px solid #263244;
+      border-radius: 18px;
+      padding: 30px;
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #9ca3af;
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      margin-bottom: 25px;
+    }
+
+    .tab {
+      background: #172033;
+      border: 1px solid #293548;
+      color: #cbd5e1;
+      padding: 12px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: #0284c7;
+      color: white;
+      border-color: #0284c7;
+    }
+
+    .section-title {
+      margin: 25px 0 15px;
+      font-size: 20px;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: #111827;
+      border: 1px solid #263244;
+      border-radius: 16px;
+      padding: 20px;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: #38bdf8;
+    }
+
+    .impact {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .high {
+      background: #451a1a;
+      color: #fca5a5;
+    }
+
+    .medium {
+      background: #422006;
+      color: #fdba74;
+    }
+
+    .low {
+      background: #172554;
+      color: #93c5fd;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .country {
+      color: #94a3b8;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .time {
+      font-size: 22px;
+      font-weight: bold;
+      color: #38bdf8;
+      margin-bottom: 15px;
+    }
+
+    .data-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .data-box {
+      background: #0b1120;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .data-box small {
+      display: block;
+      color: #64748b;
+      margin-bottom: 5px;
+    }
+
+    .data-box strong {
+      color: #e2e8f0;
+    }
+
+    .analysis {
+      background: linear-gradient(135deg, #0f172a, #172554);
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    .analysis h3 {
+      color: #38bdf8;
+      margin-bottom: 12px;
+    }
+
+    .probability {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .prob {
+      background: #0b1120;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .prob strong {
+      display: block;
+      font-size: 24px;
+      margin-top: 5px;
+    }
+
+    .gold {
+      margin-top: 20px;
+      padding: 18px;
+      background: #1c1917;
+      border: 1px solid #44403c;
+      border-radius: 12px;
+    }
+
+    .gold h4 {
+      color: #fbbf24;
+      margin-bottom: 8px;
+    }
+
+    .disclaimer {
+      margin-top: 30px;
+      padding: 15px;
+      background: #1e293b;
+      border-radius: 10px;
+      color: #94a3b8;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      color: #64748b;
+      padding: 35px 10px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      .hero {
+        padding: 22px;
+      }
+
+      .probability {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    Hindi <span>Economic News AI</span>
+  </div>
+
+  <div class="status">
+    ● सिस्टम ऑनलाइन
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <h1>🇮🇳 Economic News AI Dashboard</h1>
+
+    <p>
+      महत्वपूर्ण global economic news को आसान हिंदी में समझें।
+      Upcoming news, historical data, AI-based probability analysis
+      और Gold (XAU/USD) impact एक ही जगह देखें।
+    </p>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active">Upcoming News</button>
+    <button class="tab">USD News</button>
+    <button class="tab">News History</button>
+    <button class="tab">AI Analysis</button>
+    <button class="tab">Gold Impact</button>
+  </div>
+
+  <h2 class="section-title">🔴 आने वाली महत्वपूर्ण USD News</h2>
+
+  <section class="news-grid">
+
+    <div class="card">
+      <span class="impact high">HIGH IMPACT</span>
+
+      <h3>US CPI Inflation</h3>
+
+      <div class="country">
+        🇺🇸 United States Dollar (USD)
+      </div>
+
+      <div class="time">
+        10 Sep • 7:00 PM
+      </div>
+
+      <div class="data-row">
+        <div class="data-box">
+          <small>Previous</small>
+          <strong>3.2%</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Forecast</small>
+          <strong>3.1%</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Actual</small>
+          <strong>—</strong>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <span class="impact high">HIGH IMPACT</span>
+
+      <h3>US Non-Farm Payrolls</h3>
+
+      <div class="country">
+        🇺🇸 United States Dollar (USD)
+      </div>
+
+      <div class="time">
+        04 Sep • 7:00 PM
+      </div>
+
+      <div class="data-row">
+        <div class="data-box">
+          <small>Previous</small>
+          <strong>165K</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Forecast</small>
+          <strong>175K</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Actual</small>
+          <strong>—</strong>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <span class="impact high">HIGH IMPACT</span>
+
+      <h3>FOMC Interest Rate Decision</h3>
+
+      <div class="country">
+        🇺🇸 Federal Reserve
+      </div>
+
+      <div class="time">
+        17 Sep • 11:30 PM
+      </div>
+
+      <div class="data-row">
+        <div class="data-box">
+          <small>Previous</small>
+          <strong>4.50%</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Forecast</small>
+          <strong>4.25%</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Actual</small>
+          <strong>—</strong>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <h2 class="section-title">🤖 AI Analysis Preview</h2>
+
+  <section class="analysis">
+
+    <h3>US CPI — संभावित परिणाम का विश्लेषण</h3>
+
+    <p>
+      यह केवल demo analysis है। Live version में system पिछले
+      2–3 महीनों के economic data, previous releases, forecasts
+      और संबंधित indicators का analysis करेगा।
+    </p>
+
+    <div class="probability">
+
+      <div class="prob">
+        <span>Forecast से कम</span>
+        <strong>58%</strong>
+      </div>
+
+      <div class="prob">
+        <span>Forecast के आसपास</span>
+        <strong>27%</strong>
+      </div>
+
+      <div class="prob">
+        <span>Forecast से ज्यादा</span>
+        <strong>15%</strong>
+      </div>
+
+    </div>
+
+    <div class="gold">
+
+      <h4>🥇 XAU/USD संभावित प्रभाव</h4>
+
+      <p>
+        अगर inflation अपेक्षा से कम आती है, तो USD पर कमजोरी का
+        दबाव बन सकता है और Gold में upside reaction की संभावना
+        हो सकती है। लेकिन वास्तविक market reaction अन्य factors
+        और पहले से priced expectations पर भी निर्भर करेगा।
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <h2 class="section-title">📚 Historical Analysis</h2>
+
+  <section class="news-grid">
+
+    <div class="card">
+      <h3>पिछले 3 महीने का CPI Trend</h3>
+
+      <p class="country">
+        Historical data आने पर यहाँ automatic analysis दिखेगा।
+      </p>
+
+      <div class="data-row">
+        <div class="data-box">
+          <small>Month 1</small>
+          <strong>—</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Month 2</small>
+          <strong>—</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Month 3</small>
+          <strong>—</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Actual vs Forecast</h3>
+
+      <p class="country">
+        Historical surprise data यहाँ दिखाई जाएगी।
+      </p>
+
+      <div class="time">
+        Coming Soon
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🥇 Gold Reaction</h3>
+
+      <p class="country">
+        News release के बाद XAU/USD reaction का historical
+        analysis यहाँ आएगा।
+      </p>
+
+      <div class="time">
+        Coming Soon
+      </div>
+    </div>
+
+  </section>
+
+
+  <div class="disclaimer">
+    ⚠️ <strong>महत्वपूर्ण:</strong>
+    AI analysis भविष्य के economic data को निश्चित रूप से predict
+    नहीं करता। Probability और historical information केवल research
+    और educational purposes के लिए हैं। Market में वास्तविक reaction
+    अलग हो सकता है।
+  </div>
+
+</main>
+
+<footer>
+  Hindi Economic News AI © 2026
+</footer>
+
+</body>
+</html>
