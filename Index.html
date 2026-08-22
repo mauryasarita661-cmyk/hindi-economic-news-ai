@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hindi Economic News AI</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#080f1f;
+  color:#e5e7eb;
+}
+
+header{
+  background:#111827;
+  border-bottom:1px solid #263244;
+  padding:14px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo{
+  font-size:19px;
+  font-weight:bold;
+}
+
+.logo span{
+  color:#38bdf8;
+}
+
+.status{
+  color:#86efac;
+  font-size:12px;
+}
+
+.container{
+  width:92%;
+  max-width:1400px;
+  margin:24px auto;
+}
+
+.hero{
+  background:linear-gradient(135deg,#111827,#172554);
+  border:1px solid #263244;
+  border-radius:18px;
+  padding:24px;
+  margin-bottom:24px;
+}
+
+.hero h1{
+  font-size:27px;
+  margin-bottom:10px;
+}
+
+.hero p{
+  color:#a1a1aa;
+  line-height:1.6;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:20px 0 14px;
+}
+
+.section-title h2{
+  font-size:20px;
+}
+
+.refresh{
+  border:0;
+  background:#0284c7;
+  color:white;
+  padding:9px 14px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.refresh:hover{
+  background:#0369a1;
+}
+
+
+/* WATCHLIST */
+
+.watch-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.watch-card{
+  background:#111827;
+  border:1px solid #263244;
+  border-radius:15px;
+  padding:16px;
+}
+
+.watch-card.cpi{
+  border-top:3px solid #ef4444;
+}
+
+.watch-card.ppi{
+  border-top:3px solid #f97316;
+}
+
+.watch-card.fomc{
+  border-top:3px solid #a855f7;
+}
+
+.watch-label{
+  font-size:10px;
+  color:#94a3b8;
+  margin-bottom:8px;
+  font-weight:bold;
+}
+
+.watch-card h3{
+  font-size:17px;
+  margin-bottom:6px;
+}
+
+.country{
+  color:#94a3b8;
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.date{
+  color:#38bdf8;
+  font-size:13px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+.data-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+}
+
+.data-box{
+  background:#0b1120;
+  padding:8px 3px;
+  border-radius:7px;
+  text-align:center;
+}
+
+.data-box small{
+  display:block;
+  color:#64748b;
+  font-size:9px;
+  margin-bottom:3px;
+}
+
+.data-box strong{
+  font-size:12px;
+}
+
+.analysis-btn{
+  width:100%;
+  margin-top:12px;
+  padding:9px;
+  border:1px solid #0369a1;
+  border-radius:8px;
+  background:#082f49;
+  color:#7dd3fc;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.analysis-btn:hover{
+  background:#075985;
+}
+
+.no-event{
+  color:#94a3b8;
+  font-size:12px;
+  line-height:1.5;
+  padding-top:5px;
+}
+
+
+/* NEWS */
+
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:15px;
+}
+
+.card{
+  background:#111827;
+  border:1px solid #263244;
+  border-radius:15px;
+  padding:16px;
+}
+
+.card:hover{
+  border-color:#38bdf8;
+}
+
+.impact{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:5px;
+  font-size:9px;
+  font-weight:bold;
+  margin-bottom:9px;
+}
+
+.high{
+  background:#451a1a;
+  color:#fca5a5;
+}
+
+.medium{
+  background:#422006;
+  color:#fdba74;
+}
+
+.low{
+  background:#172554;
+  color:#93c5fd;
+}
+
+.unknown{
+  background:#1e293b;
+  color:#cbd5e1;
+}
+
+.card h3{
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.card .date{
+  margin-top:9px;
+}
+
+.loading,
+.empty,
+.error{
+  background:#111827;
+  border:1px solid #263244;
+  border-radius:14px;
+  padding:24px;
+  text-align:center;
+  color:#94a3b8;
+}
+
+.error{
+  color:#fca5a5;
+}
+
+
+/* INFO */
+
+.info{
+  margin-top:25px;
+  background:linear-gradient(135deg,#0f172a,#172554);
+  border:1px solid #334155;
+  border-radius:16px;
+  padding:21px;
+}
+
+.info h2{
+  color:#38bdf8;
+  margin-bottom:9px;
+}
+
+.gold{
+  margin-top:15px;
+  background:#1c1917;
+  border:1px solid #44403c;
+  border-radius:10px;
+  padding:15px;
+}
+
+.gold h3{
+  color:#fbbf24;
+  margin-bottom:7px;
+}
+
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  z-index:100;
+  overflow:auto;
+  padding:15px;
+}
+
+.modal-box{
+  max-width:850px;
+  margin:30px auto;
+  background:#111827;
+  border:1px solid #334155;
+  border-radius:18px;
+  padding:20px;
+}
+
+.close{
+  float:right;
+  border:0;
+  background:#374151;
+  color:white;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.modal-title{
+  color:#38bdf8;
+  font-size:22px;
+  padding-right:40px;
+}
+
+.modal-subtitle{
+  color:#94a3b8;
+  font-size:12px;
+  margin:5px 0 20px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-bottom:18px;
+}
+
+.stat{
+  background:#0b1120;
+  padding:13px;
+  border-radius:9px;
+  text-align:center;
+}
+
+.stat small{
+  color:#64748b;
+  display:block;
+  margin-bottom:4px;
+}
+
+.stat strong{
+  font-size:17px;
+}
+
+.hindi-analysis{
+  background:#172554;
+  border:1px solid #1e40af;
+  border-radius:12px;
+  padding:17px;
+  line-height:1.7;
+  margin-bottom:18px;
+}
+
+.hindi-analysis h3{
+  color:#60a5fa;
+  margin-bottom:7px;
+}
+
+.history-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:12px;
+  font-size:12px;
+}
+
+.history-table th,
+.history-table td{
+  padding:9px;
+  border-bottom:1px solid #263244;
+  text-align:left;
+}
+
+.history-table th{
+  color:#38bdf8;
+}
+
+footer{
+  text-align:center;
+  color:#64748b;
+  padding:28px;
+  font-size:12px;
+}
+
+@media(max-width:800px){
+  .watch-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+  .hero h1{
+    font-size:23px;
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .modal{
+    padding:8px;
+  }
+
+  .modal-box{
+    margin:15px auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    Hindi <span>Economic News AI</span>
+  </div>
+
+  <div class="status" id="status">
+    ● Connecting...
+  </div>
+</header>
+
+
+<main class="container">
+
+<section class="hero">
+  <h1>🇮🇳 Hindi Economic News AI</h1>
+
+  <p>
+    Important US economic news को आसान हिंदी में समझें।
+    CPI, PPI, FOMC, historical data और future-release
+    analysis एक ही जगह।
+  </p>
+</section>
+
+
+<!-- ================= WATCHLIST ================= -->
+
+<div class="section-title">
+  <h2>🔴 US High Impact Watchlist</h2>
+</div>
+
+<div id="watchContainer" class="watch-grid">
+
+  <div class="loading">
+    ⏳ CPI, PPI और FOMC खोजे जा रहे हैं...
+  </div>
+
+</div>
+
+
+<!-- ================= ALL NEWS ================= -->
+
+<div class="section-title">
+
+  <h2>🔴 Upcoming Economic News</h2>
+
+  <button class="refresh" onclick="loadNews()">
+    ↻ Refresh
+  </button>
+
+</div>
+
+<div id="newsContainer">
+
+  <div class="loading">
+    ⏳ Live news load हो रही है...
+  </div>
+
+</div>
+
+
+<!-- ================= ANALYSIS ENGINE ================= -->
+
+<section class="info">
+
+<h2>🤖 Economic Analysis Engine</h2>
+
+<p>
+किसी भी news पर 3 Month Analysis दबाकर उसके
+historical data को देख सकते हैं।
+</p>
+
+<div class="gold">
+
+<h3>🥇 XAU/USD Impact</h3>
+
+<p>
+Historical inflation, employment, GDP और
+interest-rate data के आधार पर Gold पर
+संभावित प्रभाव का assessment किया जाएगा।
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+Hindi Economic News AI © 2026
+</footer>
+
+
+<!-- ================= MODAL ================= -->
+
+<div class="modal" id="analysisModal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeAnalysis()">×</button>
+
+<h2 class="modal-title" id="modalTitle">
+3 Month Analysis
+</h2>
+
+<div class="modal-subtitle" id="modalSubtitle">
+Historical economic data
+</div>
+
+<div id="analysisContent">
+
+<div class="loading">
+⏳ Historical data load हो रहा है...
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<script>
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function getValue(obj,keys){
+
+  for(const key of keys){
+
+    if(
+      obj &&
+      obj[key] !== undefined &&
+      obj[key] !== null &&
+      obj[key] !== ""
+    ){
+      return obj[key];
+    }
+
+  }
+
+  return "—";
+}
+
+
+function getName(item){
+
+  return String(
+    getValue(item,[
+      "name",
+      "event",
+      "event_name",
+      "title",
+      "indicator"
+    ])
+  );
+}
+
+
+function getDate(item){
+
+  return getValue(item,[
+    "release_date",
+    "next_release",
+    "release_datetime",
+    "date",
+    "datetime",
+    "timestamp"
+  ]);
+}
+
+
+function getCode(item){
+
+  return item.code ||
+         item.indicator_code ||
+         item.series_code ||
+         "";
+}
+
+
+function formatDate(value){
+
+  if(!value) return "Date unavailable";
+
+  const d=new Date(value);
+
+  if(Number.isNaN(d.getTime())){
+    return String(value);
+  }
+
+  return d.toLocaleString("en-IN",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric",
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+}
+
+
+function formatDateOnly(value){
+
+  if(!value) return "—";
+
+  const d=new Date(value);
+
+  if(Number.isNaN(d.getTime())){
+    return String(value);
+  }
+
+  return d.toLocaleDateString("en-IN",{
+    day:"2-digit",
+    month:"short",
+    year:"numeric"
+  });
+}
+
+
+function impact(item){
+
+  const v=String(
+    getValue(item,[
+      "importance",
+      "impact",
+      "priority"
+    ])
+  ).toLowerCase();
+
+  if(v.includes("high") || v==="3")
+    return ["HIGH IMPACT","high"];
+
+  if(v.includes("medium") || v==="2")
+    return ["MEDIUM IMPACT","medium"];
+
+  if(v.includes("low") || v==="1")
+    return ["LOW IMPACT","low"];
+
+  return ["IMPACT","unknown"];
+}
+
+
+/* =========================================
+   IDENTIFY IMPORTANT NEWS
+========================================= */
+
+function findImportant(news,type){
+
+  if(!Array.isArray(news)) return null;
+
+  const keywords={
+
+    CPI:[
+      "cpi",
+      "consumer price index",
+      "core cpi",
+      "consumer inflation"
+    ],
+
+    PPI:[
+      "ppi",
+      "producer price index",
+      "core ppi",
+      "producer inflation"
+    ],
+
+    FOMC:[
+      "fomc",
+      "federal open market committee",
+      "federal funds rate",
+      "fed funds rate",
+      "fed interest rate",
+      "federal reserve interest rate",
+      "fed rate",
+      "interest rate decision",
+      "rate decision"
+    ]
+
+  };
+
+  return news.find(item=>{
+
+    const name=getName(item).toLowerCase();
+
+    return keywords[type].some(word=>
+      name.includes(word)
+    );
+
+  }) || null;
+}
+
+
+/* =========================================
+   WATCH CARD
+========================================= */
+
+function watchCard(item,type,title,emoji){
+
+  if(!item){
+
+    return `
+      <div class="watch-card ${type.toLowerCase()}">
+
+        <div class="watch-label">
+          ${emoji} HIGH IMPACT
+        </div>
+
+        <h3>${title}</h3>
+
+        <p class="no-event">
+          अभी connected economic feed में
+          ${title} का upcoming event नहीं मिला।
+          Refresh करने पर फिर check होगा।
+        </p>
+
+      </div>
+    `;
+
+  }
+
+
+  const name=getName(item);
+  const date=getDate(item);
+  const code=getCode(item);
+
+  const previous=getValue(item,[
+    "previous",
+    "prior",
+    "prior_value"
+  ]);
+
+  const latest=getValue(item,[
+    "latest",
+    "latest_value",
+    "actual"
+  ]);
+
+  const change=getValue(item,[
+    "change",
+    "change_abs"
+  ]);
+
+
+  const safe=JSON.stringify({
+    name:name,
+    code:code,
+    date:date
+  }).replace(/'/g,"&#39;");
+
+
+  return `
+    <div class="watch-card ${type.toLowerCase()}">
+
+      <div class="watch-label">
+        ${emoji} HIGH IMPACT
+      </div>
+
+      <h3>${title}</h3>
+
+      <div class="country">
+        🇺🇸 United States
+      </div>
+
+      <div class="date">
+        📅 ${formatDate(date)}
+      </div>
+
+      <div class="data-row">
+
+        <div class="data-box">
+          <small>Previous</small>
+          <strong>${previous}</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Latest</small>
+          <strong>${latest}</strong>
+        </div>
+
+        <div class="data-box">
+          <small>Change</small>
+          <strong>${change}</strong>
+        </div>
+
+      </div>
+
+      <button
+        class="analysis-btn"
+        onclick='openAnalysis(${safe})'
+      >
+        📊 3 Month Analysis
+      </button>
+
+    </div>
+  `;
+}
+
+
+/* =========================================
+   RENDER WATCHLIST
+========================================= */
+
+function renderWatchlist(news){
+
+  const container=
+    document.getElementById("watchContainer");
+
+  const cpi=
+    findImportant(news,"CPI");
+
+  const ppi=
+    findImportant(news,"PPI");
+
+  const fomc=
+    findImportant(news,"FOMC");
+
+
+  container.innerHTML=
+
+    watchCard(
+      cpi,
+      "CPI",
+      "CPI / Core CPI",
+      "📊"
+    )
+
+    +
+
+    watchCard(
+      ppi,
+      "PPI",
+      "PPI / Core PPI",
+      "🏭"
+    )
+
+    +
+
+    watchCard(
+      fomc,
+      "FOMC",
+      "FOMC / Fed Rate",
+      "🏦"
+    );
+}
+
+
+/* =========================================
+   LOAD NEWS
+========================================= */
+
+async function loadNews(){
+
+  const status=
+    document.getElementById("status");
+
+  const container=
+    document.getElementById("newsContainer");
+
+
+  status.textContent="● Loading...";
+  status.style.color="#fbbf24";
+
+
+  container.innerHTML=`
+
+    <div class="loading">
+      ⏳ BusinessQuant से live news लाई जा रही है...
+    </div>
+
+  `;
+
+
+  try{
+
+    const response=
+      await fetch(
+        "/api/economic-news",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    const result=
+      await response.json();
+
+
+    if(!response.ok || !result.success){
+
+      throw new Error(
+        result.error ||
+        "Economic news API failed"
+      );
+
+    }
+
+
+    const news=
+      Array.isArray(result.data)
+        ? result.data
+        : [];
+
+
+    renderWatchlist(news);
+
+    renderNews(news);
+
+
+    status.textContent=
+      "● Live data connected";
+
+    status.style.color="#86efac";
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    status.textContent=
+      "● Connection Error";
+
+    status.style.color="#fca5a5";
+
+
+    container.innerHTML=`
+
+      <div class="error">
+
+        ❌ News load नहीं हो पाई।
+
+        <br><br>
+
+        ${error.message}
+
+      </div>
+
+    `;
+
+
+    document.getElementById(
+      "watchContainer"
+    ).innerHTML=`
+
+      <div class="error">
+
+        ❌ CPI / PPI / FOMC data load नहीं हो पाया।
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================
+   RENDER ALL NEWS
+========================================= */
+
+function renderNews(news){
+
+  const container=
+    document.getElementById(
+      "newsContainer"
+    );
+
+
+  if(!news.length){
+
+    container.innerHTML=`
+
+      <div class="empty">
+
+        📭 अभी कोई upcoming economic news नहीं मिली।
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML=`
+
+    <div class="news-grid">
+
+      ${news.map(item=>{
+
+        const [impactText,impactClass]=
+          impact(item);
+
+        const name=getName(item);
+        const date=getDate(item);
+        const code=getCode(item);
+
+        const previous=
+          getValue(item,[
+            "previous",
+            "prior",
+            "prior_value"
+          ]);
+
+        const latest=
+          getValue(item,[
+            "latest",
+            "latest_value",
+            "actual"
+          ]);
+
+        const change=
+          getValue(item,[
+            "change",
+            "change_abs"
+          ]);
+
+
+        const safe=
+          JSON.stringify({
+            name:name,
+            code:code,
+            date:date
+          }).replace(/'/g,"&#39;");
+
+
+        return `
+
+          <div class="card">
+
+            <span class="impact ${impactClass}">
+              ${impactText}
+            </span>
+
+            <h3>
+              ${name}
+            </h3>
+
+            <div class="country">
+              🇺🇸 United States
+            </div>
+
+            <div class="date">
+              📅 ${formatDate(date)}
+            </div>
+
+            <div class="data-row">
+
+              <div class="data-box">
+                <small>Previous</small>
+                <strong>${previous}</strong>
+              </div>
+
+              <div class="data-box">
+                <small>Latest</small>
+                <strong>${latest}</strong>
+              </div>
+
+              <div class="data-box">
+                <small>Change</small>
+                <strong>${change}</strong>
+              </div>
+
+            </div>
+
+            <button
+              class="analysis-btn"
+              onclick='openAnalysis(${safe})'
+            >
+              📊 3 Month Analysis
+            </button>
+
+          </div>
+
+        `;
+
+      }).join("")}
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================
+   OPEN ANALYSIS
+========================================= */
+
+async function openAnalysis(item){
+
+  const modal=
+    document.getElementById(
+      "analysisModal"
+    );
+
+  const content=
+    document.getElementById(
+      "analysisContent"
+    );
+
+
+  modal.style.display="block";
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent=
+    "📊 "+item.name;
+
+
+  document.getElementById(
+    "modalSubtitle"
+  ).textContent=
+    "पिछले 3 महीने का historical analysis";
+
+
+  if(!item.code){
+
+    content.innerHTML=`
+
+      <div class="error">
+
+        ❌ इस news का indicator code उपलब्ध नहीं है।
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  content.innerHTML=`
+
+    <div class="loading">
+
+      ⏳ ${item.name} का historical data load हो रहा है...
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const response=
+      await fetch(
+        "/api/economic-history?code="+
+        encodeURIComponent(item.code),
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    const result=
+      await response.json();
+
+
+    if(!response.ok || !result.success){
+
+      throw new Error(
+        result.error ||
+        "Historical API request failed"
+      );
+
+    }
+
+
+    renderHistory(result,item);
+
+
+  }catch(error){
+
+    console.error(error);
+
+    content.innerHTML=`
+
+      <div class="error">
+
+        ❌ Historical data load नहीं हो पाया।
+
+        <br><br>
+
+        ${error.message}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================
+   HISTORY
+========================================= */
+
+function renderHistory(result,item){
+
+  const content=
+    document.getElementById(
+      "analysisContent"
+    );
+
+
+  let data=
+    Array.isArray(result.data)
+      ? result.data
+      : [];
+
+
+  if(
+    !data.length &&
+    result.data &&
+    typeof result.data==="object"
+  ){
+
+    for(const key of Object.keys(result.data)){
+
+      if(Array.isArray(result.data[key])){
+
+        data=result.data[key];
+
+        break;
+
+      }
+
+    }
+
+  }
+
+
+  if(!data.length){
+
+    content.innerHTML=`
+
+      <div class="empty">
+
+        📭 इस indicator का historical data उपलब्ध नहीं मिला।
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const values=
+    data.map(row=>
+
+      Number(
+        getValue(row,[
+          "value",
+          "latest",
+          "actual",
+          "close"
+        ])
+      )
+
+    ).filter(Number.isFinite);
+
+
+  if(!values.length){
+
+    content.innerHTML=`
+
+      <div class="empty">
+
+        📭 Historical values नहीं मिले।
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const first=values[0];
+  const last=values[values.length-1];
+
+  const change=last-first;
+
+  const percentage=
+    first!==0
+      ? change/Math.abs(first)*100
+      : 0;
+
+
+  let trend="स्थिर";
+
+  if(percentage>1)
+    trend="बढ़ता हुआ 📈";
+
+  if(percentage<-1)
+    trend="गिरता हुआ 📉";
+
+
+  let text="";
+
+  if(percentage>1){
+
+    text=`
+      पिछले 3 महीनों में indicator में
+      overall बढ़त दिखाई दे रही है।
+      आने वाली release में अगर actual data
+      इसी दिशा को confirm करता है तो USD
+      और Gold पर प्रभाव पड़ सकता है।
+    `;
+
+  }else if(percentage<-1){
+
+    text=`
+      पिछले 3 महीनों में indicator में
+      overall गिरावट दिखाई दे रही है।
+      आने वाली release में actual data इस
+      trend को confirm या reverse कर सकता है।
+    `;
+
+  }else{
+
+    text=`
+      पिछले 3 महीनों में indicator में
+      बड़ा directional change नहीं दिखाई दे रहा है।
+    `;
+
+  }
+
+
+  content.innerHTML=`
+
+    <div class="stats">
+
+      <div class="stat">
+        <small>पहली Value</small>
+        <strong>${formatNumber(first)}</strong>
+      </div>
+
+      <div class="stat">
+        <small>Latest Value</small>
+        <strong>${formatNumber(last)}</strong>
+      </div>
+
+      <div class="stat">
+        <small>Overall Change</small>
+        <strong>$
